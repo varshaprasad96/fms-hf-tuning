@@ -16,6 +16,8 @@ metadata:
   name: fms-hf-tuning-on-push
   namespace: rhoai-tenant
 spec:
+  timeouts:
+    pipeline: "2h"
   params:
   - name: dockerfile
     value: build/Dockerfile
@@ -224,6 +226,7 @@ spec:
         - name: kind
           value: task
         resolver: bundles
+      timeout: 1h30m
       when:
       - input: $(tasks.init.results.build)
         operator: in
