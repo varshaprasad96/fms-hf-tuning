@@ -18,7 +18,7 @@ metadata:
   namespace: rhoai-tenant
 spec:
   timeouts:
-    pipeline: "3h"
+    pipeline: "5h"
   params:
   - name: dockerfile
     value: build/Dockerfile
