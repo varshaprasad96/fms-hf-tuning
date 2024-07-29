@@ -11,25 +11,22 @@ ARG USER_UID
 RUN useradd -u $USER_UID ${USER} -m -g 0 --system && \
     chmod g+rx /home/${USER}
 
-RUN <<EOF
-cat <<EOD > /etc/yum.repos.d/amdgpu.repo
-[amdgpu]
-name=amdgpu
-baseurl=https://repo.radeon.com/amdgpu/6.1.2/rhel/9.4/main/x86_64/
-enabled=1
-priority=50
-gpgcheck=1
-gpgkey=https://repo.radeon.com/rocm/rocm.gpg.key
+RUN echo '[amdgpu]' > /etc/yum.repos.d/amdgpu.repo && \
+    echo 'name=amdgpu' >> /etc/yum.repos.d/amdgpu.repo && \
+    echo 'baseurl=https://repo.radeon.com/amdgpu/6.1.2/rhel/9.4/main/x86_64/' >> /etc/yum.repos.d/amdgpu.repo && \
+    echo 'enabled=1' >> /etc/yum.repos.d/amdgpu.repo && \
+    echo 'priority=50' >> /etc/yum.repos.d/amdgpu.repo && \
+    echo 'gpgcheck=1' >> /etc/yum.repos.d/amdgpu.repo && \
+    echo 'gpgkey=https://repo.radeon.com/rocm/rocm.gpg.key' >> /etc/yum.repos.d/amdgpu.repo && \
+    echo '' >> /etc/yum.repos.d/amdgpu.repo && \
+    echo '[ROCm-6.1.2]' >> /etc/yum.repos.d/amdgpu.repo && \
+    echo 'name=ROCm6.1.2' >> /etc/yum.repos.d/amdgpu.repo && \
+    echo 'baseurl=https://repo.radeon.com/rocm/rhel9/6.1.2/main' >> /etc/yum.repos.d/amdgpu.repo && \
+    echo 'enabled=1' >> /etc/yum.repos.d/amdgpu.repo && \
+    echo 'priority=50' >> /etc/yum.repos.d/amdgpu.repo && \
+    echo 'gpgcheck=1' >> /etc/yum.repos.d/amdgpu.repo && \
+    echo 'gpgkey=https://repo.radeon.com/rocm/rocm.gpg.key' >> /etc/yum.repos.d/amdgpu.repo
 
-[ROCm-6.1.2]
-name=ROCm6.1.2
-baseurl=https://repo.radeon.com/rocm/rhel9/6.1.2/main
-enabled=1
-priority=50
-gpgcheck=1
-gpgkey=https://repo.radeon.com/rocm/rocm.gpg.key
-EOD
-EOF
 
 RUN yum -y install rocm hipcc && yum clean all
 
@@ -48,7 +45,7 @@ RUN yum -y install python3 python3-pip python3-devel patch
 RUN yum -y install git bzip2 libX11-devel wget unzip
 
 RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install --no-cache-dir fastapi ninja tokenizers pandas wheels setuptools
+RUN python3 -m pip install --no-cache-dir fastapi ninja tokenizers pandas wheel setuptools
 RUN python3 -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.0
 
 ENV PATH=$PATH:/opt/rocm/bin:/libtorch/bin:
