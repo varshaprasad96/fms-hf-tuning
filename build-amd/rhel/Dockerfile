@@ -74,7 +74,7 @@ ARG USER_UID
 USER ${USER}
 WORKDIR /tmp
 RUN --mount=type=cache,target=/home/${USER}/.cache/pip,uid=${USER_UID} \
-    python -m pip install --user build
+    python3 -m pip install --user build
 COPY --chown=${USER}:root tuning tuning
 COPY .git .git
 COPY pyproject.toml pyproject.toml
@@ -125,4 +125,4 @@ WORKDIR /app
 USER ${USER}
 COPY --from=python-installations /home/${USER}/.local /home/${USER}/.local
 
-CMD [ "python", "/app/accelerate_launch.py" ]
+#CMD [ "python", "/app/accelerate_launch.py" ]
